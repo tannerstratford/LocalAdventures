@@ -48,7 +48,7 @@ const options = {
   family: 4
 };
 
-const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://tannerstratford:j17SiiNy8BojwOZY@cluster0.4lvcu.mongodb.net/shop?retryWrites=true&w=majority";
+const MONGODB_URL = process.env.MONGODB_URL || "**************************************************************************************************************";
 
 mongoose.connect(MONGODB_URL, options)
   .then(result => {
