@@ -8,6 +8,7 @@
     <main>
         <% if (prods.length > 0) { %>
             <div class="grid">
+                <% console.log('Authenticated: ', isAuthenticated); %>
                 <% for (let product of prods) { %>
                     <article class="card product-item">
                         <header class="card__header">
@@ -23,7 +24,9 @@
                         </div>
                         <div class="card__actions">
                                 <a href="/products/<%= product._id %>" class="btn">Details</a>
-                            <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                                <% if(isAuthenticated) { %>
+                                    <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                                <% } %>
                         </div>
                     </article>
                 <% } %>
