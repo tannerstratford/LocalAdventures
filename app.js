@@ -78,6 +78,7 @@ const options = {
 };
 
 const MONGODB_URL = process.env.MONGODB_URL || key.MongoDBURI;
+const nodemailerAPI = process.env.nodemailerAPI || key.nodemailerAPI;
 
 mongoose
   .connect(
