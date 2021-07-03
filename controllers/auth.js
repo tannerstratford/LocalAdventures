@@ -1,12 +1,13 @@
 const crypto = require('crypto');
 var apiKey;
-if(!process.env.nodemailerAPI){
-  const key = require('../config');
-  apiKey = key.nodemailerAPI
-}
-else{
+//if(!process.env.nodemailerAPI){
+  //const key = require('../config');
+  //apiKey = key.nodemailerAPI
+//}
+//else{
   apiKey = process.env.nodemailerAPI;
-}
+//}
+//for deploying to heroku
 
 
 const bcrypt = require('bcryptjs');
