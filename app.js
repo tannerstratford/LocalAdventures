@@ -1,6 +1,7 @@
 const path = require('path');
 const cors = require('cors');
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
+const key = require('./config.js');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,12 +14,9 @@ const flash = require('connect-flash');
 const errorController = require('./controllers/error');
 const User = require('./models/user');
 
-
-const MongoDBURI = 'mongodb+srv://tannerstratford:FTC2A30MkMz2Ar0O@cluster0.4lvcu.mongodb.net/shop?retryWrites=true&w=majority'
-
 const app = express();
 const store = new MongoDBStore({
-  uri: MongoDBURI,
+  uri: key.MongoDBURI,
   collection: 'sessions'
 });
 const csrfProtection = csrf();
@@ -42,10 +40,15 @@ app.use((req, res, next) => {
   }
   User.findById(req.session.user._id)
     .then(user => {
+      if(!user){
+        return next();
+      }
      req.user = user;
       next();
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      throw new Error(err)
+    });
 });
 
 app.use((req, res, next) => {
@@ -74,25 +77,17 @@ const options = {
   family: 4
 };
 
-const MONGODB_URL = process.env.MONGODB_URL || "mongodb+srv://tannerstratford:FTC2A30MkMz2Ar0O@cluster0.4lvcu.mongodb.net/shop?retryWrites=true&w=majority";
+const MONGODB_URL = process.env.MONGODB_URL || key.MongoDBURI;
 
-mongoose.connect(MONGODB_URL, options)
+mongoose
+  .connect(
+    MONGODB_URL
+  )
   .then(result => {
-    User.findOne().then(user => {
-      if (!user) {
-        const user = new User({
-          username: 'tannerstratford',
-          email: 'tannerstratford1@gmail.com',
-          cart: {
-            items: []
-          }
-        });
-        user.save();
-      }
-    })
-
+    
     app.listen(PORT);
-  }).catch(err => {
+  })
+  .catch(err => {
     console.log(err);
   });
 
