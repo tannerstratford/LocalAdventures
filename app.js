@@ -16,7 +16,7 @@ const User = require('./models/user');
 
 const app = express();
 const store = new MongoDBStore({
-  uri: key.MongoDBURI,
+  uri: process.env.MONGODB_URL, //key.MongoDBURI,
   collection: 'sessions'
 });
 const csrfProtection = csrf();
