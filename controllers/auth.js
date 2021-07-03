@@ -1,5 +1,13 @@
 const crypto = require('crypto');
-const key = require('../config');
+var apiKey;
+if(!process.env.nodemailerAPI){
+  const key = require('../config');
+  apiKey = key.nodemailerAPI
+}
+else{
+  apiKey = process.env.nodemailerAPI;
+}
+
 
 const bcrypt = require('bcryptjs');
 
@@ -12,7 +20,7 @@ const User = require('../models/user');
 
 const transporter = nodemailer.createTransport(sendGridTransport({
   auth: {
-    api_key: key.nodemailerAPI || process.env.nodemailerAPI
+    api_key: apiKey
   }
 }));
 
