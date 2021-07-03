@@ -1,7 +1,7 @@
 const path = require('path');
 const cors = require('cors');
 const PORT = process.env.PORT || 5000 // So we can run on heroku || (OR) localhost:5000
-const key = require('./config.js');
+//const key = require('./config.js');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -77,7 +77,7 @@ const options = {
   family: 4
 };
 
-const MONGODB_URL = process.env.MONGODB_URL || key.MongoDBURI;
+const MONGODB_URL = process.env.MONGODB_URL; //|| key.MongoDBURI;
 
 mongoose
   .connect(
