@@ -1,0 +1,40 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/adventure.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main>
+            <% if (adventures.length > 0) { %>
+                <div class = "grid">
+                    <% adventures.forEach(p => { %>
+                        <% console.log(p)%>
+                        <div class = "centered">
+                            <article class = "card adventure-item">
+                                <h1><%= p.title %></h1>
+                                <div class="card__image">
+                                    <img src="<%= p.imageUrl %>"
+                                        alt="<%= p.title %>">
+                                </div>
+                            <div class="card__actions">
+                                <a href="/adventures/<%= p.adventureId %>" class="btn">Details</a>
+                            </div>
+                            <form action="/CompleteAdventuresDeleteAdventure" method="POST">
+                                <input type="hidden" value="<%= p.adventureId %>" name="adventureId">
+                                <input type="hidden" name= "_csrf" value = "<%= csrfToken %>">
+                                <button class="btn danger" type="submit">Delete</button>
+                            </form>
+                            </article>
+                        </div>
+                        
+                    <% }) %>
+                </div>
+                <hr>
+                <div class="centered">
+                </div>
+                
+            <% } else { %>
+                <h1>No Completed Adventures Recorded</h1>
+            <% } %>
+        </main>
+        <%- include('../includes/end.ejs') %>

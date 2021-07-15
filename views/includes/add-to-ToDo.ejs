@@ -1,0 +1,5 @@
+<form action="/ToDo" method="post">
+    <input type="hidden" name= "_csrf" value = "<%= csrfToken %>">
+    <button class="btn" type="submit">Add to To-Do List</button>
+    <input type="hidden" name="adventureId" value="<%= adventure._id %>">
+</form>

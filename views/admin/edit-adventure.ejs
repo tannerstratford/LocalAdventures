@@ -1,0 +1,49 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/adventure.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <% if (errorMessage.length > 0) { %>
+            <div class ="user-message user-message--error">
+                <%= errorMessage %>
+            </div>
+            <% } %>
+        <form class="adventure-form" action="/admin/<% if (editing) { %>edit-adventure<% } else { %>add-adventure<% } %>" method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input class = "<%=validationErrors.find(e => e.param === 'title') ? 'invalid' : 'valid' %>"type="text" name="title" id="title" value="<% if (editing || hasError) { %><%= adventure.title %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="imageUrl">Image URL</label>
+                <input class = "<%=validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : 'valid' %>"type="text" name="imageUrl" id="imageUrl" value="<% if (editing || hasError) { %><%= adventure.imageUrl %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="city">City</label>
+                <input class = "<%=validationErrors.find(e => e.param === 'city') ? 'invalid' : 'valid' %>"type="text" name="city" id="city" value="<% if (editing || hasError) { %><%= adventure.city %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="state">State</label>
+                <input class = "<%=validationErrors.find(e => e.param === 'state') ? 'invalid' : 'valid' %>"type="text" name="state" id="state" step="0.01" value="<% if (editing || hasError) { %><%= adventure.state %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input class = "<%=validationErrors.find(e => e.param === 'price') ? 'invalid' : 'valid' %>"type="number" name="price" id="price" step="0.01" value="<% if (editing || hasError) { %><%= adventure.price %><% } %>">
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea class = "<%=validationErrors.find(e => e.param === 'description') ? 'invalid' : 'valid' %>"name="description" id="description" rows="5"><% if (editing || hasError) { %><%= adventure.description %><% } %></textarea>
+            </div>
+            <% if (editing) { %>
+                <input type="hidden" value="<%= adventure._id %>" name="adventureId">
+            <% } %>
+
+            <input type="hidden" name= "_csrf" value = "<%= csrfToken %>">
+
+            <button class="btn" type="submit"><% if (editing) { %>Update Adventure<% } else { %>Add Adventure<% } %></button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

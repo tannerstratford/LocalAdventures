@@ -11,14 +11,56 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String,
+    required: false
+  },
+  bio: {
+    type: String,
+    required: false
+  },
+  city: {
+    type: String,
+    required: false
+  },
+  imageUrl: {
+    type: String,
+    required: false
+  },
   resetToken: String,
   resetTokenExpiration: Date,
-  cart: {
+  ToDo: {
     items: [
       {
-        productId: {
+        adventureId: {
           type: Schema.Types.ObjectId,
-          ref: 'Product',
+          required: true
+        },
+        title: {
+          type: String,
+          required: true
+        },
+        imageUrl: {
+          type: String,
+          required: true
+        },
+        quantity: { type: Number, required: true }
+      }
+    ]
+  },
+  CompleteAdventures: {
+    items: [
+      {
+        adventureId: {
+          type: Schema.Types.ObjectId,
+          required: true
+        },
+        title: {
+          type: String,
+          required: true
+        },
+        imageUrl: {
+          type: String,
           required: true
         },
         quantity: { type: Number, required: true }
@@ -27,39 +69,81 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.methods.addToCart = function(product) {
-  const cartProductIndex = this.cart.items.findIndex(cp => {
-    return cp.productId.toString() === product._id.toString();
+userSchema.methods.addToToDo = function(adventure) {
+  const ToDoAdventureIndex = this.ToDo.items.findIndex(cp => {
+    return cp.adventureId.toString() === adventure._id.toString();
   });
   let newQuantity = 1;
-  const updatedCartItems = [...this.cart.items];
+  const updatedToDoItems = [...this.ToDo.items];
 
-  if (cartProductIndex >= 0) {
-    newQuantity = this.cart.items[cartProductIndex].quantity + 1;
-    updatedCartItems[cartProductIndex].quantity = newQuantity;
+  if (ToDoAdventureIndex >= 0) {
+    newQuantity = this.ToDo.items[ToDoAdventureIndex].quantity + 1;
+    updatedToDoItems[ToDoAdventureIndex].quantity = newQuantity;
   } else {
-    updatedCartItems.push({
-      productId: product._id,
+    updatedToDoItems.push({
+      adventureId: adventure._id,
+      imageUrl: adventure.imageUrl,
+      title: adventure.title,
       quantity: newQuantity
     });
   }
-  const updatedCart = {
-    items: updatedCartItems
+  const updatedToDo = {
+    items: updatedToDoItems
   };
-  this.cart = updatedCart;
+  this.ToDo = updatedToDo;
   return this.save();
 };
 
-userSchema.methods.removeFromCart = function(productId) {
-  const updatedCartItems = this.cart.items.filter(item => {
-    return item.productId.toString() !== productId.toString();
+userSchema.methods.removeFromToDo = function(adventureId) {
+  const updatedToDoItems = this.ToDo.items.filter(item => {
+    return item.adventureId.toString() !== adventureId.toString();
   });
-  this.cart.items = updatedCartItems;
+  this.ToDo.items = updatedToDoItems;
   return this.save();
 };
 
-userSchema.methods.clearCart = function() {
-  this.cart = { items: [] };
+userSchema.methods.clearToDo = function() {
+  this.ToDo = { items: [] };
+  return this.save();
+};
+
+
+
+userSchema.methods.addToCompleteAdventures = function(adventure) {
+  const CompleteAdventuresAdventureIndex = this.CompleteAdventures.items.findIndex(cp => {
+    return cp.adventureId.toString() === adventure._id.toString();
+  });
+  let newQuantity = 1;
+  const updatedCompleteAdventuresItems = [...this.CompleteAdventures.items];
+
+  if (CompleteAdventuresAdventureIndex >= 0) {
+    newQuantity = this.CompleteAdventures.items[CompleteAdventuresAdventureIndex].quantity + 1;
+    updatedCompleteAdventuresItems[CompleteAdventuresAdventureIndex].quantity = newQuantity;
+  } else {
+    updatedCompleteAdventuresItems.push({
+      adventureId: adventure._id,
+      title: adventure.title,
+      imageUrl: adventure.imageUrl,
+      quantity: newQuantity
+    });
+  }
+  const updatedCompleteAdventures = {
+    items: updatedCompleteAdventuresItems
+  };
+  this.CompleteAdventures = updatedCompleteAdventures;
+  return this.save();
+};
+
+userSchema.methods.removeFromCompleteAdventures = function(adventureId) {
+  const updatedCompleteAdventuresItems = this.CompleteAdventures.items.filter(item => {
+    return item.adventureId.toString() !== adventureId.toString();
+  });
+  this.CompleteAdventures.items = updatedCompleteAdventuresItems;
+  return this.save();
+};
+
+userSchema.methods.clearCompleteAdventures = function() {
+  this.CompleteAdventures = { items: [] };
   return this.save();
 };
 
@@ -71,10 +155,10 @@ module.exports = mongoose.model('User', userSchema);
 // const ObjectId = mongodb.ObjectId;
 
 // class User {
-//   constructor(username, email, cart, id) {
+//   constructor(username, email, ToDo, id) {
 //     this.name = username;
 //     this.email = email;
-//     this.cart = cart; // {items: []}
+//     this.ToDo = ToDo; // {items: []}
 //     this._id = id;
 //   }
 
@@ -83,7 +167,7 @@ module.exports = mongoose.model('User', userSchema);
 //     return db.collection('users').insertOne(this);
 //   }
 
-//   addToCart(product) {
+//   addToToDo(product) {
 //     const cartProductIndex = this.cart.items.findIndex(cp => {
 //       return cp.productId.toString() === product._id.toString();
 //     });

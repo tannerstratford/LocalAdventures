@@ -1,0 +1,129 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/adventure.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <main class = "centered">
+                <% if (name=="" && imageUrl=="" && city=="" && bio=="" ) {%>
+                    <div>
+                        <h1>There isn't any information on this profile</h1>
+                    </div>
+                    <% } else {%>
+                        <div>
+                            <h1>
+                                <%= name %>
+                            </h1>
+                            </header>
+                            <div class="image">
+                                <img src="<%= imageUrl %>" alt="<%= name %>">
+                            </div>
+                            <div class="card__content">
+                                <h2 class="adventure__price">
+                                    <%= city %>
+                                </h2>
+                                <p class="adventure__description">
+                                    <%= bio %>
+                                </p>
+                            </div>
+
+                            
+
+                            <% if (adventures.length> 0) { %>
+                                <br>
+                                <br>
+                                <h1>Adventures created by <%=name%></h1>
+                                <div class="grid">
+                                    <% for (let adventure of adventures) { %>
+                                        <article class="card adventure-item">
+                                            <header class="card__header">
+                                                <h1 class="adventure__title">
+                                                    <%= adventure.title %>
+                                                </h1>
+                                            </header>
+                                            <div class="card__image">
+                                                <img src="<%= adventure.imageUrl %>" alt="<%= adventure.title %>">
+                                            </div>
+                                            
+                                            <div class="card__actions">
+                                                <a href="/adventures/<%= adventure._id %>" class="btn">Details</a>
+                                                <% if(isAuthenticated) { %>
+                                                    <%- include('../includes/add-to-ToDo.ejs', {adventure: adventure}) %>
+                                                <% } %>
+                                            </div>
+                                        </article>
+                                        <% } %>
+                                </div>
+                                <% } else { %>
+                                    <br>
+                                    <br>
+                                    <h1>No Adventures Created by <%=name%></h1>
+                                    <% } %>
+
+
+                                    <% if (ToDo.length> 0) { %>
+                                        <br>
+                                        <br>
+                                        <h1>Adventures on <%=name%>'s To-Do List</h1>
+                                        <div class="grid">
+
+                                            <% for (let adventure of ToDo) { %>
+                                                <article class="card adventure-item">
+                                                    <header class="card__header">
+                                                        <h1 class="adventure__title">
+                                                            <%= adventure.title %>
+                                                        </h1>
+                                                    </header>
+                                                    <div class="card__image">
+                                                        <img src="<%= adventure.imageUrl %>" alt="<%= adventure.title %>">
+                                                    </div>
+                                                    <div class="card__actions">
+                                                        <a href="/adventures/<%= adventure.adventureId %>" class="btn">Details</a>
+                                                        <% if(isAuthenticated) { %>
+                                                            <%- include('../includes/add-to-ToDo.ejs', {adventure: adventure}) %>
+                                                        <% } %>
+                                                    </div>
+                                                </article>
+                                                <% } %>
+                                        </div>
+                                        <% } else { %>
+                                            <br>
+                                            <br>
+                                            <h1>Nothing on <%=name%>'s To-Do List</h1>
+                                            <% } %>
+
+                                            <% if (CompleteAdventures.length> 0) { %>
+                                                <br>
+                                                <br>
+                                                <h1><%=name%>'s Completed Adventures</h1>
+                                                <div class="grid">
+                                                    <% for (let adventure of CompleteAdventures) { %>
+                                                        <article class="card adventure-item">
+                                                            <header class="card__header">
+                                                                <h1 class="adventure__title">
+                                                                    <%= adventure.title %>
+                                                                </h1>
+                                                            </header>
+                                                            <div class="card__image">
+                                                                <img src="<%= adventure.imageUrl %>" alt="<%= adventure.title %>">
+                                                            </div>
+                                                            <div class="card__actions">
+                                                                <a href="/adventures/<%= adventure.adventureId %>" class="btn">Details</a>
+                                                                <% if(isAuthenticated) { %>
+                                                                    <%- include('../includes/add-to-ToDo.ejs', {adventure: adventure}) %>
+                                                                <% } %>
+                                                            </div>
+                                                        </article>
+                                                        <% } %>
+                                                </div>
+                                                <% } else { %>
+                                                    <br>
+                                                    <br>
+                                                    <h1>No Completed Adventures Yet</h1>
+                                                    <% } %>
+
+                                                    <% } %>
+
+
+            </main>
+            <%- include('../includes/end.ejs') %>

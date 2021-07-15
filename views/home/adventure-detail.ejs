@@ -1,0 +1,80 @@
+<%- include('../includes/head.ejs') %>
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+            <main class="centered">
+                <% if (errorMessage.length> 0) { %>
+                    <div class="user-message user-message--error">
+                        <%= errorMessage %>
+                    </div>
+                    <% } %>
+                        <h1>
+                            <%= adventure.title %>
+                        </h1>
+                        <h3>
+                            <%= adventure.city%>, <%=adventure.state%>
+                        </h3>
+                        <hr>
+                        <div class="image">
+                            <img src="<%= adventure.imageUrl %>" alt="<%= adventure.title %>">
+                        </div>
+                        <form class="adventure-form" action="/like" method="POST">
+                            <input type="hidden" name="adventureId" id="adventureId" value=<%=adventure._id%>>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button class="btn" type="submit">Like</button>
+                        </form>
+                        <h2>$<%= adventure.price %>
+                        </h2>
+                        <p>
+                            <%= adventure.description %>
+                        </p>
+                        <p>
+                            <%=adventure.likes.items.length%> People have liked this
+                        </p>
+                        <p>Created by <a href="/profiles/<%= adventure.userId %>">
+                                <%= adventure.userName %>
+                            </a></p>
+                        <%- include('../includes/add-to-ToDo.ejs') %>
+                            <%if(reviews.length> 0) { %>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <h1>Comments</h1>
+                                <div class="centered">
+                                    <ul class="reviews">
+
+                                        <% reviews.forEach(p=> { %>
+                                            <li class="listReviews">
+                                                <%=p.review%> - <a href="../profiles/<%=p.reviewUserId%>">
+                                                        <%=p.reviewUserName%>
+                                                    </a>
+                                            </li>
+                                            <%})%>
+                                    </ul>
+                                </div>
+                                <% } %>
+                                    <form class="adventure-form" action="/admin/post-review" method="POST">
+                                        <input type="hidden" name="title" id="title" value=<%=adventure.title%>>
+                                        <input type="hidden" name="imageUrl" id="imageUrl"
+                                            value=<%=adventure.imageUrl%>>
+                                        <input type="hidden" name="price" id="price" value=<%=adventure.price%>>
+                                        <input type="hidden" name="description" id="description"
+                                            value=<%=adventure.description%>>
+                                        <input type="hidden" name="city" id="city" value=<%=adventure.city%>>
+                                        <input type="hidden" name="state" id="state" value=<%=adventure.state%>>
+                                        <input type="hidden" name="_id" id="_id" value=<%=adventure._id%>>
+                                        <input type="hidden" name="reviews" id="reviews" value=<%=adventure.reviews%>>
+                                        <div class="form-control">
+                                            <p>Add a comment, what did you think of the adventure?</p>
+                                            <textarea style="width: 65%"
+                                                class="<%=validationErrors.find(e => e.param === 'review') ? 'invalid' : 'valid' %>"
+                                                name="review" id="review"
+                                                rows="5"><% if (editing || hasError) { %><%= adventure.review %><% } %></textarea>
+                                        </div>
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button class="btn" type="submit">Add Review</button>
+                                    </form>
+            </main>
+            <%- include('../includes/end.ejs') %>

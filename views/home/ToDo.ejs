@@ -1,0 +1,49 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/adventure.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+        <main>
+            <% if (adventures.length > 0) { %>
+                <div class = "grid">
+                    <% adventures.forEach(p => { %>
+                        <div class = "centered">
+                            <article class = "card adventure-item">
+                            <h1><%= p.title %></h1>
+                            <div class="card__image">
+                                <img src="<%= p.imageUrl %>"
+                                    alt="<%= p.title %>">
+                            </div>
+                            <div class="card__actions">
+                                <a href="/adventures/<%= p.adventureId %>" class="btn">Details</a>
+                            </div>
+                            <form action="/CompleteAdventures" method="POST">
+                                <input type="hidden" value="<%= p.adventureId %>" name="adventureId">
+                                <input type="hidden" name= "_csrf" value = "<%= csrfToken %>">
+                                <button class="btn" type="submit">Mark as Complete</button>
+                            </form>
+                            <form action="/ToDoDeleteAdventure" method="POST">
+                                <input type="hidden" value="<%= p.adventureId %>" name="adventureId">
+                                <input type="hidden" name= "_csrf" value = "<%= csrfToken %>">
+                                <button class="btn danger" type="submit">Delete</button>
+                            </form>
+                            </article>
+                        </div>
+                        
+                    <% }) %>
+                </div>
+            
+                <hr>
+                <!-- <div class="centered">
+                    <form action="/create-order" method="POST">
+                        <input type="hidden" name= "_csrf" value = "<%= csrfToken %>">
+                        <button type="submit" class="btn">Order Now!</button>
+                    </form>
+                </div> -->
+                
+            <% } else { %>
+                <h1>No Adventures in To-Do List</h1>
+            <% } %>
+        </main>
+        <%- include('../includes/end.ejs') %>

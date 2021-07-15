@@ -1,0 +1,43 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/adventure.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <%console.log(errorMessage)%>
+        <%console.log(errorMessage.length)%>
+        <% if (errorMessage.length > 0) { %>
+            <div class ="user-message user-message--error">
+                <%= errorMessage %>
+            </div>
+            <% } %>
+        <form class="product-form" action="/admin/update-profile" method="POST" novalidate>
+            <div class="form-control">
+                <label for="title">Name</label>
+                <input class = "<%=validationErrors.find(e => e.param === 'name') ? 'invalid' : 'valid' %>"type="text" name="name" id="name" value="<%= name %>">
+            </div>
+            <div class="form-control">
+                <label for="imageUrl">Image URL</label>
+                <input class = "<%=validationErrors.find(e => e.param === 'imageUrl') ? 'invalid' : 'valid' %>"type="text" name="imageUrl" id="imageUrl" value="<%= imageUrl %>">
+            </div>
+            <div class="form-control">
+                <label for="bio">City</label>
+                <input class = "<%=validationErrors.find(e => e.param === 'city') ? 'invalid' : 'valid' %>"type="text" name="city" id="city" value="<%= city %>">
+            </div>
+            <div class="form-control">
+                <label for="description">Bio</label>
+                <textarea class = "<%=validationErrors.find(e => e.param === 'bio') ? 'invalid' : 'valid' %>"name="bio" id="bio" rows="5"><%= bio %></textarea>
+            </div>
+            
+            <input type="hidden" value="<%= profileId %>" name="profileId">
+            
+
+            <input type="hidden" name= "_csrf" value = "<%= csrfToken %>">
+
+            <button class="btn" type="submit">Update Profile</button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

@@ -1,12 +1,13 @@
 const crypto = require('crypto');
 var apiKey;
-//if(!process.env.nodemailerAPI){
-  //const key = require('../config');
-  //apiKey = key.nodemailerAPI
-//}
-//else{
+var key;
+if(!process.env.nodemailerAPI){
+  key = require('../config');
+  apiKey = key.nodemailerAPI
+}
+else{
   apiKey = process.env.nodemailerAPI;
-//}
+}
 //for deploying to heroku
 
 
@@ -100,6 +101,7 @@ exports.postLogin = (req, res, next) => {
 };
 
 exports.postSignup = (req, res, next) => {
+  const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
   const errors = validationResult(req);
@@ -111,7 +113,7 @@ exports.postSignup = (req, res, next) => {
       path: '/signup',
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
-      oldInput: { email: email, password: password, confirmPassword: req.body.confirmPassword },
+      oldInput: { name: name, email: email, password: password, confirmPassword: req.body.confirmPassword },
       validationErrors: errors.array()
     });
   }
@@ -122,18 +124,22 @@ exports.postSignup = (req, res, next) => {
       const user = new User({
         email: email,
         password: hashedPassword,
-        cart: { items: [] }
+        ToDo: { items: [] },
+        name: name,
+        city: "",
+        imageUrl: "",
+        bio: ""
       });
       return user.save();
     })
     .then(result => {
       res.redirect('/');
-      return transporter.sendMail({
-        to: email,
-        from: 'str18033@byui.edu',
-        subject: 'Sign-up succeeded!',
-        html: '<h1>You successfully signed up!</h1>'
-      });
+      // return transporter.sendMail({
+      //   to: email,
+      //   from: 'str18033@byui.edu',
+      //   subject: 'Sign-up succeeded!',
+      //   html: '<h1>You successfully signed up!</h1>'
+      // });
     }).catch(err => {
       console.log(err);
     });
@@ -180,7 +186,7 @@ exports.postReset = (req, res, next) => {
           subject: 'Password reset',
           html: `
         <p> You requested a password reset </P>
-        <p> Click this <a href="http://localhost:3000/reset/${token}">link</a> to set a new password </p>
+        <p> Click this <a href="http://localhost:5000/reset/${token}">link</a> to set a new password </p>
         
         `
         })
@@ -214,7 +220,7 @@ exports.postNewPassword = (req, res, next) => {
   const newPassword = req.body.password;
   const userId = req.body.userId;
   const passwordToken = req.body.passwordToken;
-  let resetUser
+  let resetUser;
 
   User.findOne(
     {

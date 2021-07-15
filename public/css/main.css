@@ -24,7 +24,26 @@ form {
 }
 
 .image {
-  height: 20rem;
+  height: 30rem;
+}
+
+.reviews {
+  width: 70%;
+  text-align: center;
+  list-style: none;
+}
+
+.homepage {
+  border: solid black 2px;
+  text-align: center;
+  background-color: #b9c9ff;
+}
+
+ul { display: inline-block; text-align: left; }
+.listReviews { 
+  border: solid black 2px;
+  padding: 30px;
+  
 }
 
 .image img {
@@ -34,7 +53,7 @@ form {
 .main-header {
   width: 100%;
   height: 3.5rem;
-  background-color: #00695c;
+  background-color: #5b51bb;
   padding: 0 1.5rem;
   display: flex;
   align-items: center;

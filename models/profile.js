@@ -1,32 +1,32 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 
-const productSchema = new Schema({
-  title: {
-    type: String,
-    required: true
-  },
-  price: {
-    type: Number,
-    required: true
-  },
-  description: {
-    type: String,
-    required: true
-  },
-  imageUrl: {
-    type: String,
-    required: true
-  },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  }
-});
+// const profileSchema = new Schema({
+//   name: {
+//     type: String,
+//     required: true
+//   },
+//   bio: {
+//     type: String,
+//     required: true
+//   },
+//   city: {
+//     type: String,
+//     required: true
+//   },
+//   imageUrl: {
+//     type: String,
+//     required: true
+//   },
+//   userId: {
+//     type: Schema.Types.ObjectId,
+//     ref: 'User',
+//     required: true
+//   }
+// });
 
-module.exports = mongoose.model('Product', productSchema);
+// module.exports = mongoose.model('Profile', profileSchema);
 
 // const mongodb = require('mongodb');
 // const getDb = require('../util/database').getDb;

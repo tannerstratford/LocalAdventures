@@ -1,0 +1,53 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/adventure.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+
+    <main class = "centered">
+    <div class = "homepage">
+        <h1>Adventure's out there!</h1>
+    </div>
+    <div class = "homepage">
+        <h2>Search for adventures in your city, or be the first one to add your adventures</h2>
+    </div>
+    <div class = "homepage">
+        <h2>Make a To-Do list of all of the adventures that you want to go on with the click of a button</h2>
+    </div>
+    <div class = "homepage">
+        <h2>Mark off the adventures that you have completed</h2>
+    </div>
+    <div class = "homepage">
+        <h2>Like, and leave comments for the different adventures that you go on</h2>
+    </div>
+        <!-- <% if (advens.length > 0) { %>
+            <div class="grid">
+                <% console.log('Authenticated: ', isAuthenticated); %>
+                <% for (let adventure of advens) { %>
+                    <article class="card adventure-item">
+                        <header class="card__header">
+                            <h1 class="adventure__title"><%= adventure.title %></h1>
+                        </header>
+                        <div class="card__image">
+                            <img src="<%= adventure.imageUrl %>"
+                                alt="<%= adventure.title %>">
+                        </div>
+                        <div class="card__content">
+                            <h2 class="adventure__price">$<%= adventure.price %></h2>
+                            <p class="adventure__description"><%= adventure.description %></p>
+                        </div>
+                        <div class="card__actions">
+                                <a href="/adventures/<%= adventure._id %>" class="btn">Details</a>
+                                <% if(isAuthenticated) { %>
+                                    <%- include('../includes/add-to-ToDo.ejs', {adventure: adventure}) %>
+                                <% } %>
+                        </div>
+                    </article>
+                <% } %>
+            </div>
+        <% } else { %>
+            <h1>No Adventures Found!</h1>
+        <% } %> -->
+    </main>
+<%- include('../includes/end.ejs') %>

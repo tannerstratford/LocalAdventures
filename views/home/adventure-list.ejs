@@ -1,0 +1,48 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/adventure.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <main>
+                <% if (advens.length> 0) { %>
+                    <div class="grid">
+                        <% for (let adventure of advens) { %>
+                            <article class="card adventure-item">
+                                <header class="card__header">
+                                    <h1 class="adventure__title">
+                                        <%= adventure.title %>
+                                    </h1>
+                                </header>
+                                <div class="card__image">
+                                    <img src="<%= adventure.imageUrl %>" alt="<%= adventure.title %>">
+                                </div>
+                                <div class="card__content">
+                                    <h2 class="adventure__city">
+                                        <%= adventure.city %>
+                                    </h2>
+                                    <p class="adventure__state">
+                                        <%= adventure.state %>
+                                    </p>
+                                    <h2 class="adventure__price">$
+                                        <%= adventure.price %>
+                                    </h2>
+                                    <p class="adventure__description">
+                                        <%= adventure.description %>
+                                    </p>
+                                </div>
+                                <div class="card__actions">
+                                    <a href="/adventures/<%= adventure._id %>" class="btn">Details</a>
+                                    <% if(isAuthenticated) { %>
+                                        <%- include('../includes/add-to-ToDo.ejs', {adventure: adventure}) %>
+                                    <% } %>
+                                </div>
+                            </article>
+                            <% } %>
+                    </div>
+                    <% } else { %>
+                        <h1>No Adventures Found!</h1>
+                        <% } %>
+            </main>
+            <%- include('../includes/end.ejs') %>

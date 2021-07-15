@@ -1,0 +1,53 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/auth.css">
+
+
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <main>
+                <% if (errorMessage.length > 0) { %>
+                    <div class ="user-message user-message--error">
+                        <%= errorMessage %>
+                    </div>
+                    <% } %>
+                        <form class="login-form" action="/CityAdventures" method="POST" novalidate>
+                            <div class="form-control">
+                                <label for="city">City</label>
+                                <input class = "<%=validationErrors.find(e => e.param === 'city') ? 'invalid' : 'valid' %>"type="city" name="city" id="city" value=<%=oldInput.city %>>
+                            </div>
+                            <div class="form-control">
+                                <label for="state">State</label>
+                                <input class = "<%=validationErrors.find(e => e.param === 'state') ? 'invalid' : 'valid' %>"type="state" name="state" id="state" value=<%=oldInput.state %>>
+                            </div>
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                            <button class="btn" type="submit">Search</button>
+                        </form>
+
+                        <% if (cities.length > 0) { %>
+                            <div class="grid">
+                                <% console.log('Authenticated: ', isAuthenticated); %>
+                                <% for (let city of cities) { %> 
+                                  <div class = "centered">
+                                    <article class="card adventure-item">     
+                                    <h1 class="adventure__title"><%= city.city %></h1>
+                                    <h2 class="adventure__price"><%= city.state %></h2>    
+                                    <form class="login-form" action="/CityAdventures" method="POST" novalidate>
+                                        <input type="hidden" name="city" id = "city" value=<%=city.city%>>
+                                        <input type="hidden" name="state" id = "state" value=<%=city.state%>>
+                                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                        <button class="btn" type="submit">Search adventures here!</button>
+                                    </form>
+                                    </article>
+                                </div>   
+                                <% } %>
+                            </div>
+                        <% } else { %>
+                            <h1>No Adventures Found!</h1>
+                        <% } %>
+                        
+            </main>
+            <%- include('../includes/end.ejs') %>
